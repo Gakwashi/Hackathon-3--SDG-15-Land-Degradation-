@@ -22,6 +22,3 @@ TreeTrack is a web-based tool that helps schools, NGOs, and communities track th
 3. Run dev server: `node app.js`
 4. Open `localhost:-----` in your browser
 
-
-## Contact
-Created by Stacy – [Your GitHub] | [Your Email]
