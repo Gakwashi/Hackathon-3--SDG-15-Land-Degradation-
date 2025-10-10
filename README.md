@@ -1,40 +1,63 @@
-# TreeTrack App
+ForestRestore - Deforestation Analysis App
+A web application that uses AI to analyze deforested areas and recommend tree species for restoration.
 
-## Overview
-TreeTrack is a web-based tool that helps farmers, schools, and NGOs track agroforestry tree planting and monitor soil recovery. It supports Kenya’s SDG 15 goals by combining geolocation, survival tracking, and impact reporting.
+Features
+Image Analysis: Upload or take photos of deforested land
 
-## Features
-- GPS-based tree logging
-- Agroforestry tagging (fruit, fodder, nitrogen-fixing)
-- Optional soil health notes (erosion, fertility, cover crops)
-- Impact dashboard (survival rates, planting density)
-- Exportable reports (CSV or PDF)
+AI-Powered Insights: Google Gemini AI analyzes soil conditions
 
-## Tech Stack
-- Frontend: HTML, CSS, JavaScript (or Claude-generated UI)
-- Backend: Supabase (PostgreSQL + Auth + Storage)
-- Mapping: Leaflet.js
-- Optional AI: Claude AI for form generation, data validation, or report summaries
+Smart Recommendations: Get tree species that restore soil nutrients
 
-## Target Users
-- Farmer cooperatives
-- Environmental NGOs
-- County governments
-- Schools and youth clubs
+User Accounts: Save your analyses with Supabase authentication
 
-## SDG Alignment
-- SDG 15: Life on Land
-- SDG 13: Climate Action
-- SDG 2: Zero Hunger
+Mobile Ready: Works on phones, tablets, and computers
 
-## Getting Started
-1. Clone the repo
-2. Connect to Supabase project
-3. Run dev server: `npm run dev` or use Claude-generated frontend
-4. Open `localhost:3000` in your browser
+SDG Alignment
+This project directly supports these UN Sustainable Development Goals:
 
-## License
-MIT License
+SDG 15 - Life on Land
 
-## Contact
-Created by Stacy – [Your GitHub] | [Your Email]
+Combat desertification and restore degraded forests
+
+Halt biodiversity loss through strategic replanting
+
+Promote sustainable forest management
+
+SDG 13 - Climate Action
+
+Carbon sequestration through reforestation
+
+Combat land degradation contributing to climate change
+
+Promote ecosystem resilience
+
+SDG 2 - Zero Hunger
+
+Restore soil fertility for agricultural lands
+
+Promote agroforestry practices
+
+Support food security through soil health
+
+Run the App
+1. Add your API keys to services.js:
+
+  Supabase URL and Key
+
+  Google Gemini API Key
+
+2. Start the server:
+python -m http.server 8000
+
+3. Open: http://localhost:8000
+
+How It Works
+1.Take/Upload Photo of deforested area
+
+2.AI Analysis evaluates soil conditions and impact
+
+3.Get Recommendations for trees that restore nutrients
+
+4.Save Results to track restoration progress
+
+Supporting UN Sustainable Development Goals through technology 🌍🌳
