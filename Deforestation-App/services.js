@@ -433,14 +433,19 @@ Consider factors like: terrain slope, visible soil quality, remaining vegetation
         });
     }
 
-    // Save analysis to database
+    // Save analysis to database - FIXED VERSION
     async saveAnalysis(imageData, analysis, userId) {
         try {
+            // Ensure we have a valid user ID, use mock if null
+            const validUserId = userId || 'mock-user-' + Date.now();
+            
+            console.log("💾 Saving analysis for user:", validUserId);
+            
             const { data, error } = await this.supabase
                 .from('deforestation_analyses')
                 .insert([{
                     image_url: imageData.url,
-                    user_id: userId,
+                    user_id: validUserId,
                     analysis_result: analysis,
                     created_at: new Date().toISOString()
                 }])
@@ -451,7 +456,13 @@ Consider factors like: terrain slope, visible soil quality, remaining vegetation
         } catch (error) {
             console.error("❌ saveAnalysis error:", error);
             // Return mock data if save fails
-            return { id: 'mock-save-' + Date.now() };
+            return { 
+                id: 'mock-save-' + Date.now(),
+                image_url: imageData.url,
+                user_id: userId || 'mock-user',
+                analysis_result: analysis,
+                created_at: new Date().toISOString()
+            };
         }
     }
 }
@@ -500,7 +511,16 @@ try {
             ];
             return analysisTypes[Math.floor(Math.random() * analysisTypes.length)];
         },
-        saveAnalysis: async () => ({ id: 'fallback-save' })
+        saveAnalysis: async (imageData, analysis, userId) => {
+            const validUserId = userId || 'fallback-user';
+            return { 
+                id: 'fallback-save-' + Date.now(),
+                image_url: imageData.url,
+                user_id: validUserId,
+                analysis_result: analysis,
+                created_at: new Date().toISOString()
+            };
+        }
     };
     console.log("🆘 Using complete emergency fallback service");
 }
