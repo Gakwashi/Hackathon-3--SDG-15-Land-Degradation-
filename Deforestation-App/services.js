@@ -1,3 +1,10 @@
+
+    // Wait for Supabase to load
+if (typeof supabase === 'undefined') {
+    console.error('❌ Supabase not loaded. Make sure supabase.js is loaded before services.js');
+    throw new Error('Supabase client not available');
+}
+
 // Forest Restore Service
 class ForestRestoreService {
     constructor() {
@@ -7,6 +14,7 @@ class ForestRestoreService {
         );
         this.OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
     }
+  
 
     // Authentication methods
     async signUp(email, password) {
