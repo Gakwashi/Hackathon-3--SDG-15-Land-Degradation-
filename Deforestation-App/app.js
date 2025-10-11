@@ -1,3 +1,22 @@
+// Navigation function
+function showScreen(screenId) {
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+    
+    // Show target screen
+    document.getElementById(screenId).classList.add('active');
+    
+    // Initialize icons
+    lucide.createIcons();
+    
+    // If showing services screen, initialize the app
+    if (screenId === 'services-screen' && window.app) {
+        window.app.init();
+    }
+}
+
 class ForestRestoreApp {
     constructor() {
         this.isAnalyzing = false;

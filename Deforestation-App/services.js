@@ -2,8 +2,8 @@
 class ForestRestoreService {
     constructor() {
         this.supabase = supabase.createClient(
-           'https://vudoppfwfasejfegcwkp.supabase.co',
-           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1ZG9wcGZ3ZmFzZWpmZWdjd2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTAyMjIsImV4cCI6MjA3NTY2NjIyMn0.yNfvAnaujo8e6aHmiB6YaOMpiXYX0YGCa_iAxDlihGg'
+            'https://vudoppfwfasejfegcwkp.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1ZG9wcGZ3ZmFzZWpmZWdjd2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTAyMjIsImV4cCI6MjA3NTY2NjIyMn0.yNfvAnaujo8e6aHmiB6YaOMpiXYX0YGCa_iAxDlihGg'
         );
         this.GEMINI_API_KEY = 'AIzaSyDNvkLTJojfy1pxtePFsmBQP-YLj3fhzMU';
     }

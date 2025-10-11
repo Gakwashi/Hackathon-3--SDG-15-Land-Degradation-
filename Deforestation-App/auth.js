@@ -1,7 +1,17 @@
 class AuthManager {
     constructor() {
         this.isLogin = true;
-        this.init();
+        
+        // Only initialize if we're in app.html
+        if (this.isAppPage()) {
+            this.init();
+        }
+    }
+
+    isAppPage() {
+        return window.location.pathname.includes('app.html') || 
+               window.location.pathname === '/app.html' ||
+               !document.getElementById('auth-form'); // If no auth form, assume not app page
     }
 
     init() {
@@ -26,11 +36,11 @@ class AuthManager {
     setupEventListeners() {
         const authForm = document.getElementById('auth-form');
         const toggleAuth = document.getElementById('toggle-auth');
-        const logoutBtn = document.getElementById('logout-btn');
+        const logoutBtn = document.getElementById('dashboard-logout-btn');
 
-        authForm.addEventListener('submit', (e) => this.handleAuth(e));
-        toggleAuth.addEventListener('click', () => this.toggleAuthMode());
-        logoutBtn.addEventListener('click', () => this.handleLogout());
+        if (authForm) authForm.addEventListener('submit', (e) => this.handleAuth(e));
+        if (toggleAuth) toggleAuth.addEventListener('click', () => this.toggleAuthMode());
+        if (logoutBtn) logoutBtn.addEventListener('click', () => this.handleLogout());
     }
 
     async handleAuth(e) {
@@ -39,6 +49,8 @@ class AuthManager {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const authButton = document.getElementById('auth-button');
+
+        if (!authButton) return;
 
         authButton.disabled = true;
         authButton.textContent = this.isLogin ? 'Signing In...' : 'Creating Account...';
@@ -67,14 +79,16 @@ class AuthManager {
         const authButton = document.getElementById('auth-button');
         const toggleAuth = document.getElementById('toggle-auth');
 
-        if (this.isLogin) {
-            authTitle.textContent = 'Sign In to Restore Forests';
-            authButton.textContent = 'Sign In';
-            toggleAuth.textContent = 'Need an account? Join ForestRestore';
-        } else {
-            authTitle.textContent = 'Join ForestRestore';
-            authButton.textContent = 'Sign Up';
-            toggleAuth.textContent = 'Have an account? Sign in';
+        if (authTitle && authButton && toggleAuth) {
+            if (this.isLogin) {
+                authTitle.textContent = 'Sign In to Restore Forests';
+                authButton.textContent = 'Sign In';
+                toggleAuth.textContent = 'Need an account? Join ForestRestore';
+            } else {
+                authTitle.textContent = 'Join ForestRestore';
+                authButton.textContent = 'Sign Up';
+                toggleAuth.textContent = 'Have an account? Sign in';
+            }
         }
     }
 
@@ -88,26 +102,40 @@ class AuthManager {
     }
 
     showApp(user) {
-        document.getElementById('auth-screen').classList.remove('active');
-        document.getElementById('app-screen').classList.add('active');
-        document.getElementById('user-email').textContent = user.email;
+        const authScreen = document.getElementById('auth-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const userEmail = document.getElementById('dashboard-user-email');
         
-        // Initialize app
-        if (window.app) {
-            window.app.init();
+        if (authScreen && dashboardScreen && userEmail) {
+            authScreen.classList.remove('active');
+            dashboardScreen.classList.add('active');
+            userEmail.textContent = user.email;
+            
+            console.log("✅ Successfully switched to dashboard");
+        } else {
+            console.error("❌ Could not find required screen elements");
         }
     }
 
     showAuth() {
-        document.getElementById('auth-screen').classList.add('active');
-        document.getElementById('app-screen').classList.remove('active');
+        const authScreen = document.getElementById('auth-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
         
-        // Clear form
-        document.getElementById('auth-form').reset();
+        if (authScreen && dashboardScreen) {
+            authScreen.classList.add('active');
+            dashboardScreen.classList.remove('active');
+            
+            if (document.getElementById('auth-form')) {
+                document.getElementById('auth-form').reset();
+            }
+        }
     }
 }
 
-// Initialize auth manager when DOM is loaded
+// Only initialize if we're on a page that has auth elements
 document.addEventListener('DOMContentLoaded', () => {
-    window.authManager = new AuthManager();
+    // Check if auth form exists before initializing
+    if (document.getElementById('auth-form')) {
+        window.authManager = new AuthManager();
+    }
 });
