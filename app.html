@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForestRestore App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Your existing app screen code exactly as you have it -->
+    <div id="app-screen" class="screen active">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i data-lucide="trees"></i>
+                    <h1>ForestRestore</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                </div>
+                <div class="user-menu">
+                    <span id="user-email"></span>
+                    <button id="logout-btn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Rest of your existing app content -->
+        <main class="main-content">
+            <!-- Your existing upload, camera, and results sections -->
+        </main>
+    </div>
+
+    <script src="services.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
