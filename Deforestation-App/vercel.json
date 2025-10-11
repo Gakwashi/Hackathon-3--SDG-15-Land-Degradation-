@@ -1,1 +1,21 @@
-{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/app.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
