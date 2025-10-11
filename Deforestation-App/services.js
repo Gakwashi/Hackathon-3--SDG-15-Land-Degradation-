@@ -535,6 +535,174 @@ Consider factors like: terrain slope, visible soil quality, remaining vegetation
     }
 }
 
+// FRONTEND EVENT HANDLERS - ADDED TO FIX THE NULL ERROR
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("🔧 Initializing frontend event handlers...");
+    
+    // File input handler
+    const fileInput = document.getElementById('file-input');
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileUpload);
+        console.log("✅ File input handler attached");
+    }
+
+    // Camera handlers
+    const startCameraBtn = document.getElementById('start-camera');
+    const captureBtn = document.getElementById('capture-btn');
+    const retakeBtn = document.getElementById('retake-btn');
+    const analyzeCaptureBtn = document.getElementById('analyze-capture');
+
+    if (startCameraBtn) {
+        startCameraBtn.addEventListener('click', startCamera);
+        console.log("✅ Camera handler attached");
+    }
+    if (captureBtn) {
+        captureBtn.addEventListener('click', capturePhoto);
+    }
+    if (retakeBtn) {
+        retakeBtn.addEventListener('click', retakePhoto);
+    }
+    if (analyzeCaptureBtn) {
+        analyzeCaptureBtn.addEventListener('click', analyzeCapturedPhoto);
+    }
+});
+
+async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        console.log("📸 Handling file upload:", file.name);
+        showLoadingState();
+        
+        // Use the safe method that handles everything
+        const result = await window.forestService.safeAnalyzeDeforestation(file);
+        
+        if (result.success) {
+            console.log("✅ Analysis successful, displaying results");
+            displayAnalysisResults(result.analysis, result.imageData);
+        } else {
+            console.error("❌ Analysis failed:", result.error);
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        console.error("❌ Analysis failed:", error);
+        showError("Analysis failed. Using sample data instead.");
+        // Fallback to sample data
+        const sampleAnalysis = window.forestService.getSmartAnalysis();
+        displayAnalysisResults(sampleAnalysis, { url: URL.createObjectURL(file) });
+    }
+}
+
+function showLoadingState() {
+    const resultsSection = document.getElementById('results-section');
+    if (resultsSection) {
+        resultsSection.classList.remove('hidden');
+        resultsSection.innerHTML = '<div class="loading">🔄 Analyzing deforestation... This may take a moment.</div>';
+    }
+}
+
+function showError(message) {
+    const resultsSection = document.getElementById('results-section');
+    if (resultsSection) {
+        resultsSection.innerHTML = `<div class="error">❌ ${message}</div>`;
+    }
+}
+
+function displayAnalysisResults(analysis, imageData) {
+    if (!analysis) {
+        console.error("❌ No analysis data to display");
+        showError("No analysis data received");
+        return;
+    }
+
+    console.log("📊 Displaying analysis results:", analysis);
+    
+    const resultsSection = document.getElementById('results-section');
+    if (!resultsSection) {
+        console.error("❌ Results section not found");
+        return;
+    }
+
+    // Display impact analysis
+    const impactAnalysis = document.getElementById('impact-analysis');
+    if (impactAnalysis && analysis.deforestation_impact) {
+        impactAnalysis.innerHTML = `
+            <div class="impact-metrics">
+                <div class="metric">
+                    <span class="metric-label">Scale:</span>
+                    <span class="metric-value ${analysis.deforestation_impact.scale}">${analysis.deforestation_impact.scale}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Erosion Risk:</span>
+                    <span class="metric-value ${analysis.deforestation_impact.soil_erosion_risk}">${analysis.deforestation_impact.soil_erosion_risk}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Biodiversity Loss:</span>
+                    <span class="metric-value ${analysis.deforestation_impact.biodiversity_loss}">${analysis.deforestation_impact.biodiversity_loss}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Restoration Priority:</span>
+                    <span class="metric-value ${analysis.restoration_priority}">${analysis.restoration_priority}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    // Display tree recommendations
+    const treeRecommendations = document.getElementById('tree-recommendations');
+    if (treeRecommendations && analysis.recommended_trees) {
+        treeRecommendations.innerHTML = analysis.recommended_trees.map(tree => `
+            <div class="tree-card">
+                <h5>${tree.name}</h5>
+                <p class="scientific-name">${tree.scientific_name}</p>
+                <div class="tree-type ${tree.type}">${tree.type.replace('_', ' ')}</div>
+                <div class="growth-rate">Growth: ${tree.growth_rate}</div>
+                <p class="soil-improvement">${tree.soil_improvement}</p>
+                <div class="benefits">
+                    ${tree.benefits.map(benefit => `<span class="benefit-tag">${benefit}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Display immediate actions
+    const immediateActions = document.getElementById('immediate-actions');
+    if (immediateActions && analysis.immediate_actions) {
+        immediateActions.innerHTML = analysis.immediate_actions.map(action => `
+            <div class="action-item">
+                <i data-lucide="check-circle"></i>
+                <span>${action}</span>
+            </div>
+        `).join('');
+    }
+
+    resultsSection.classList.remove('hidden');
+    
+    // Refresh Lucide icons
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
+}
+
+// Camera functions (simplified)
+async function startCamera() {
+    console.log("📷 Starting camera...");
+    showError("Camera feature coming soon. Please upload an image file instead.");
+}
+
+async function capturePhoto() {
+    console.log("📸 Capturing photo...");
+}
+
+function retakePhoto() {
+    console.log("🔄 Retaking photo...");
+}
+
+async function analyzeCapturedPhoto() {
+    console.log("🔍 Analyzing captured photo...");
+}
+
 // Create global service instance - ALWAYS WORKS
 console.log("🔄 Creating global forestService instance...");
 try {
