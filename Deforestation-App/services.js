@@ -1,5 +1,4 @@
-
-    // Wait for Supabase to load
+// Wait for Supabase to load
 if (typeof supabase === 'undefined') {
     console.error('❌ Supabase not loaded. Make sure supabase.js is loaded before services.js');
     throw new Error('Supabase client not available');
@@ -8,13 +7,20 @@ if (typeof supabase === 'undefined') {
 // Forest Restore Service
 class ForestRestoreService {
     constructor() {
-        this.supabase = supabase.createClient(
-            'https://vudoppfwfasejfegcwkp.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1ZG9wcGZ3ZmFzZWpmZWdjd2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTAyMjIsImV4cCI6MjA3NTY2NjIyMn0.yNfvAnaujo8e6aHmiB6YaOMpiXYX0YGCa_iAxDlihGg'
-        );
-        this.OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+        console.log("🔄 ForestRestoreService constructor called");
+        
+        try {
+            this.supabase = supabase.createClient(
+                'https://vudoppfwfasejfegcwkp.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1ZG9wcGZ3ZmFzZWpmZWdjd2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTAyMjIsImV4cCI6MjA3NTY2NjIyMn0.yNfvAnaujo8e6aHmiB6YaOMpiXYX0YGCa_iAxDlihGg'
+            );
+            this.OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+            console.log("✅ Supabase client created successfully");
+        } catch (error) {
+            console.error('❌ Failed to create Supabase client:', error);
+            throw error;
+        }
     }
-  
 
     // Authentication methods
     async signUp(email, password) {
@@ -355,4 +361,12 @@ Consider factors like: terrain slope, visible soil quality, remaining vegetation
 }
 
 // Create global service instance
-window.forestService = new ForestRestoreService();
+console.log("🔄 Creating global forestService instance...");
+try {
+    window.forestService = new ForestRestoreService();
+    console.log("✅ forestService created successfully:", !!window.forestService);
+    console.log("🔑 forestService.signIn available:", typeof window.forestService?.signIn);
+} catch (error) {
+    console.error('❌ Failed to create forestService:', error);
+    window.forestService = null;
+}
