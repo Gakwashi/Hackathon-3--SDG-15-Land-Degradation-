@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "Deforestation-App/**/*",
+      "src": "**/*",
       "use": "@vercel/static"
     }
   ],
@@ -16,7 +16,7 @@
       "dest": "/Deforestation-App/about.html"
     },
     {
-      "src": "/app", 
+      "src": "/app",
       "dest": "/Deforestation-App/app.html"
     },
     {
